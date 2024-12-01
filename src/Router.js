@@ -4,7 +4,6 @@ import SignUp from './components/SignUp/SignUp';
 import Dashboard from './components/Dashboard/Dashboard';
 import PrivateRoute from './components/PrivateRoutes';
 import { Outlet, createBrowserRouter } from "react-router-dom";
-import { Logo } from './Logo'
 
 const futureConfig = {
   future: {
@@ -22,7 +21,6 @@ const router = createBrowserRouter([
     element: (
       <>
         <div>Header</div>
-        <Logo />
         <Outlet />
         <div>Footer</div>
       </>

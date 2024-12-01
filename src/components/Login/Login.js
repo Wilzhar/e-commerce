@@ -23,7 +23,7 @@ function Login() {
       loginUser();
       navigate('/dashboard');    // Redirect to dashboard
     } catch (err) {
-      setError('Login failed. Please check your credentials.');
+      setError(err?.response?.data?.errors || 'Login failed. Please check your credentials.');
     }
   };
 
