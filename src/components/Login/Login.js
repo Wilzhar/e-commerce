@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../services/authService";
 import { useAuth } from '../../context/AuthContext';
 
-import '../../styles/Login.css';
+import './Login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -21,7 +21,7 @@ function Login() {
     try {
       await login(email, password);  // API call to backend
       loginUser();
-      navigate('/dashboard');    // Redirect to dashboard (or home)
+      navigate('/dashboard');    // Redirect to dashboard
     } catch (err) {
       setError('Login failed. Please check your credentials.');
     }
@@ -39,6 +39,7 @@ function Login() {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
             required
           />
         </div>
@@ -49,6 +50,7 @@ function Login() {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
             required
           />
         </div>

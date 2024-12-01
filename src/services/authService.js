@@ -3,9 +3,8 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL;
 
 export const login = async (email, password) => {
-  console.log("Login");
   const response = await axios.post(`${API_URL}/auth/sign_in`, { email, password });
-  const token = response.headers.get("Authorization");
+  const token = response.headers["authorization"];
   if (token) {
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(response?.data?.data));
@@ -20,7 +19,7 @@ export const signUp = async (userData) => {
 
     // Assuming the backend returns user data including a token on successful sign-up
     if (response?.data?.status == 'success') {
-      localStorage.setItem('token', response.headers.get('Authorization'));
+      localStorage.setItem('token', response.headers["authorization"]);
       localStorage.setItem('user', JSON.stringify(response?.data?.data));
       return response.data;
     }

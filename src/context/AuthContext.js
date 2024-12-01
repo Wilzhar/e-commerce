@@ -8,9 +8,9 @@ const AuthProvider = (props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('user'));
+    const storedUser = localStorage.getItem('user');
     const storedToken = localStorage.getItem('token');
-    if (storedUser) setUser(storedUser);
+    if (storedUser) setUser(JSON.parse(storedUser));
     if (storedToken) setToken(storedToken);
     setLoading(false);
   }, []);
