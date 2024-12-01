@@ -8,90 +8,77 @@ import * as authService from '../../services/authService';
 import Login from './Login';
 import Dashboard from '../Dashboard/Dashboard';
 
+// Mock useNavigate explicitly with jest.fn() and store it in a variable
 const mockedNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => mockedNavigate
-}));
+
+jest.mock('react-router-dom', () => {
+  const originalModule = jest.requireActual('react-router-dom');
+  return {
+    ...originalModule,
+    useNavigate: () => mockedNavigate, // Return the mocked function
+  };
+});
 
 describe('Login Component', () => {
+  beforeEach(() => {
+    mockedNavigate.mockClear(); // Clear the mock calls before each test
+  });
+
+  const setupComponent = (component) =>
+    render(
+      <MemoryRouter>
+        <AuthProvider>{component}</AuthProvider>
+      </MemoryRouter>
+    );
+
+  const simulateLogin = async (email, password) => {
+    await userEvent.type(screen.getByPlaceholderText(/Email/i), email);
+    await userEvent.type(screen.getByPlaceholderText(/Password/i), password);
+    await userEvent.click(screen.getByRole('button', { name: 'Login' }));
+  };
+
   test('successful login', async () => {
     const mockUser = { id: 1, email: 'test@example.com' };
 
-    // Mock login API response to resolve quickly
-    authService.login = jest.fn().mockResolvedValue(mockUser);
+    // Mock login API response
+    jest.spyOn(authService, 'login').mockResolvedValue(mockUser);
 
-    // Render the component
-    render(
-      <MemoryRouter>
-        <AuthProvider>
-          <Login />
-        </AuthProvider>
-      </MemoryRouter>
-    );
+    // Render Login component
+    setupComponent(<Login />);
 
     // Simulate user interaction
-    await userEvent.type(screen.getByPlaceholderText(/Email/i), 'test@example.com');
-    await userEvent.type(screen.getByPlaceholderText('Password'), 'password123');
-    await userEvent.click(screen.getByRole('button', { name: 'Login' }));
+    await simulateLogin('test@example.com', 'password123');
 
+    // Assert navigation to dashboard
+    await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith('/dashboard'));
 
-    await waitFor(() => {
-      expect(mockedNavigate).toHaveBeenCalledWith('/dashboard');
-    });
+    // Simulate localStorage behavior
+    jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(JSON.stringify(mockUser));
 
-    // You can also check if loginUser was called after the API resolves
-    expect(authService.login).toHaveBeenCalledWith('test@example.com', 'password123');
+    // Render Dashboard component
+    setupComponent(<Dashboard />);
 
-    window.history.pushState({}, '', `/dashboard`);
-
-    const mockGetItem = jest.spyOn(Storage.prototype, 'getItem');
-
-    // Simulate a value in localStorage
-    mockGetItem.mockReturnValue(JSON.stringify(mockUser));
-
-    render(
-      <MemoryRouter>
-        <AuthProvider>
-          <Dashboard />
-        </AuthProvider>
-      </MemoryRouter>
-    )
-
+    // Assert dashboard content
     expect(screen.getByText(/Welcome to the Dashboard/i)).toBeInTheDocument();
     expect(screen.getByText(/Email:/i)).toBeInTheDocument();
-    expect(screen.getByText(`${mockUser.email}`)).toBeInTheDocument();
-
-    // mockGetItem.mockRestore();
+    expect(screen.getByText(mockUser.email)).toBeInTheDocument();
   });
 
   test('failed login', async () => {
-    // Mocking the login function to simulate a failed login
-    authService.login = jest.fn(() => {
-      throw {
-        response: {
-          data: {
-            errors: 'Invalid login credentials. Please try again'
-          }
-        }
-      };
+    const errorMessage = 'Invalid login credentials. Please try again';
+
+    // Mock login function to simulate a failed login
+    jest.spyOn(authService, 'login').mockImplementation(() => {
+      throw { response: { data: { errors: errorMessage } } };
     });
 
-    // Render the Login component within the necessary context (MemoryRouter, AuthProvider)
-    render(
-      <MemoryRouter>
-        <AuthProvider>
-          <Login />
-        </AuthProvider>
-      </MemoryRouter>
-    );
+    // Render Login component
+    setupComponent(<Login />);
 
-    // Simulate user interaction (filling out the form and clicking login)
-    await userEvent.type(screen.getByPlaceholderText(/Email/i), 'test@example.com');
-    await userEvent.type(screen.getByPlaceholderText('Password'), 'password123');
-    await userEvent.click(screen.getByRole('button', { name: 'Login' }));
+    // Simulate user interaction
+    await simulateLogin('test@example.com', 'password123');
 
-    // Check that the error message appears on the screen
-    expect(screen.getByText(/Invalid login credentials. Please try again/i)).toBeInTheDocument();
+    // Assert error message
+    expect(screen.getByText(new RegExp(errorMessage, 'i'))).toBeInTheDocument();
   });
 });
