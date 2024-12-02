@@ -1,26 +1,54 @@
 import axios from 'axios';
 import { login, signUp, logout } from './authService';
+import MockAdapter from 'axios-mock-adapter';
 
-jest.mock('axios'); // Mock axios
+const API_URL = process.env.REACT_APP_API_URL;
 
 describe('authService', () => {
-  const API_URL = "http://localhost:3000";
+  let mock;
 
-  test('login should store token and user data', async () => {
-    const mockResponse = {
-      headers: { authorization: 'Bearer mock-token' },
-      data: { data: { id: 1, name: 'John Doe' } },
-    };
+  beforeEach(() => {
+    mock = new MockAdapter(axios); // Initialize the mock adapter
+  });
 
-    axios.post.mockResolvedValue(mockResponse);
+  afterEach(() => {
+    mock.restore(); // Reset after each test
+  });
 
-    const result = await login('test@example.com', 'password');
+  describe('login', () => {
+    test('should store token and user data', async () => {
+      const mockResponse = { data: { id: 1, email: 'test@example.com' } };
+      const mockHeaders = { authorization: 'Bearer mock-token' };
 
-    // Check if localStorage.setItem was called correctly
-    expect(localStorage.setItem).toHaveBeenCalledWith('token', 'Bearer mock-token');
-    expect(localStorage.setItem).toHaveBeenCalledWith('user', JSON.stringify(mockResponse.data.data));
+      // Mock the POST request
+      mock
+        .onPost(`${API_URL}/auth/sign_in`, { email: 'test@example.com', password: 'password' })
+        .reply(200, mockResponse, mockHeaders);
 
-    expect(result).toEqual(mockResponse.data);
+      const result = await login('test@example.com', 'password');
+
+      // Check if localStorage.setItem was called correctly
+      expect(localStorage.setItem).toHaveBeenCalledWith('token', 'Bearer mock-token');
+      expect(localStorage.setItem).toHaveBeenCalledWith('user', JSON.stringify(mockResponse.data));
+
+      expect(result).toEqual(mockResponse);
+    });
+
+    test('should throw an error if the API call fails', async () => {
+      const mockError = { errors: ['Invalid login credentials. Please try again.'] };
+
+      mock
+        .onPost(`${API_URL}/auth/sign_in`, { email: 'test@example.com', password: 'password' })
+        .reply(401, mockError);
+
+      try {
+        await login('test@example.com', 'password');
+      } catch (error) {
+        expect(error.response.status).toBe(401); // Ensure 401 status
+        expect(error.response.data.errors).toEqual(["Invalid login credentials. Please try again."]);
+      }
+
+    });
   });
 
   // Add similar tests for signUp and logout
