@@ -1,20 +1,12 @@
-// src/App.test.js
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { screen } from '@testing-library/react';
 import Home from './Home';
-import { AuthProvider } from '../../context/AuthContext';
 import '@testing-library/jest-dom';
+import { setupComponent } from '../../../tests/test-utils.js';
 
 describe('Home Component', () => {
   test('renders the Home page when the path is "/"', () => {
-    render(
-      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <AuthProvider>
-          <Home />
-        </AuthProvider>
-      </MemoryRouter >
-    );
+    setupComponent(<Home />);
     expect(screen.getByText(/Welcome to the Home page/i)).toBeInTheDocument();
   });
 });

@@ -11,11 +11,7 @@ export const login = async (email, password) => {
     }
     return response.data;
   } catch (err) {
-    if (err.response?.status === 401) {
-      throw new Error(err.response?.data?.errors || 'Invalid login credentials.');
-    } else {
-      throw new Error('Login failed. Please check your credentials and try again.');
-    }
+    throw new Error(err.response?.data?.errors || 'Invalid login credentials.');
   }
 };
 
@@ -32,20 +28,39 @@ export const signUp = async (userData) => {
     }
     throw new Error(response?.data?.message);
   } catch (err) {
-    throw new Error(err.response?.data?.message || 'Sign-up failed');
+    throw new Error(err?.response?.data?.message || 'Sign-up failed');
   }
 };
 
 export const logout = async () => {
   try {
     // Replace with your backend endpoint for logout
-    const response = await axios.delete(`${API_URL}/auth/sign_out`);
-    if (response?.data?.status === 'success') {
-      localStorage.removeItem('token');
-      return response.data;
+    const token = localStorage.getItem('token');
+    if (!token) {
+      removeLocalStorage();
+      return;
+    }
+
+    const response = await axios.delete('http://localhost:3000/auth/sign_out', {
+      headers: {
+        'Authorization': token
+      }
+    });
+    if (response?.data?.success) {
+      removeLocalStorage();
+      return;
     }
     throw new Error(response?.data?.message || 'Logout failed');
   } catch (err) {
-    throw new Error(err.response?.data?.message || 'Logout failed');
+    if (err.response?.status === 404) {
+      removeLocalStorage();
+      return;
+    }
+    throw new Error('Internal server error');
   }
 };
+
+const removeLocalStorage = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+}

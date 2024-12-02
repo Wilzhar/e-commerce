@@ -1,35 +1,16 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
-import { AuthProvider } from '../../context/AuthContext';
 import * as authService from '../../services/authService';
+import { setupComponent, mockedNavigate } from '../../../tests/test-utils.js';
 
 import Login from './Login';
 import Dashboard from '../Dashboard/Dashboard';
-
-// Mock useNavigate explicitly with jest.fn() and store it in a variable
-const mockedNavigate = jest.fn();
-
-jest.mock('react-router-dom', () => {
-  const originalModule = jest.requireActual('react-router-dom');
-  return {
-    ...originalModule,
-    useNavigate: () => mockedNavigate, // Return the mocked function
-  };
-});
 
 describe('Login Component', () => {
   beforeEach(() => {
     mockedNavigate.mockClear(); // Clear the mock calls before each test
   });
-
-  const setupComponent = (component) =>
-    render(
-      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <AuthProvider>{component}</AuthProvider>
-      </MemoryRouter>
-    );
 
   const simulateLogin = async (email, password) => {
     await userEvent.type(screen.getByPlaceholderText(/Email/i), email);

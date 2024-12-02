@@ -50,5 +50,66 @@ describe('authService', () => {
     });
   });
 
-  // Add similar tests for signUp and logout
+  describe('logout', () => {
+    test('should remove localStorage items', async () => {
+      const mockResponse = { success: true };
+
+      // Mock the DELETE request
+      mock
+        .onDelete(`${API_URL}/auth/sign_out`)
+        .reply(200, mockResponse);
+
+      await logout();
+
+      // Check if localStorage.removeItem was called correctly
+      expect(localStorage.removeItem).toHaveBeenCalledWith('token');
+      expect(localStorage.removeItem).toHaveBeenCalledWith('user');
+    });
+
+    test('should throw an error if the API call fails', async () => {
+
+      jest.spyOn(Storage.prototype, 'getItem').mockReturnValue('Bearer mock-token');
+
+      mock
+        .onDelete(`${API_URL}/auth/sign_out`)
+        .reply((config) => {
+          // Verify headers
+          expect(config.headers.Authorization).toBe('Bearer mock-token');
+
+          // Return mock response
+          return [500, {}];
+        });
+
+      try {
+        await logout();
+      } catch (error) {
+        expect(error.message).toEqual("Internal server error");
+      }
+
+      expect(localStorage.removeItem).not.toHaveBeenCalledWith('token');
+      expect(localStorage.removeItem).not.toHaveBeenCalledWith('user');
+    });
+
+    test('should remove localStorage items if the API call returns a 404 error', async () => {
+      const mockError = { errors: ['Invalid login credentials. Please try again.'] };
+      jest.spyOn(Storage.prototype, 'getItem').mockReturnValue('Bearer mock-token');
+
+      // Mock the DELETE request
+      mock
+        .onDelete(`${API_URL}/auth/sign_out`)
+        .reply((config) => {
+          // Verify headers
+          expect(config.headers.Authorization).toBe('Bearer mock-token');
+
+          // Return mock response
+          return [404, mockError];
+        });
+
+      await logout();
+
+      // Check if localStorage.removeItem was called correctly
+      expect(localStorage.removeItem).toHaveBeenCalledWith('token');
+      expect(localStorage.removeItem).toHaveBeenCalledWith('user');
+    });
+  });
 });

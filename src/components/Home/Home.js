@@ -4,11 +4,11 @@ import { useAuth } from '../../context/AuthContext';
 
 const Home = () => {
   const navigate = useNavigate();
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
-    if (!loading && user) navigate('/dashboard');
-  }, [user, loading, navigate]);
+    if (user) navigate('/dashboard');
+  }, [user, navigate]);
 
   return (
     <div>

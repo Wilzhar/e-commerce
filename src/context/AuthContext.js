@@ -5,14 +5,12 @@ const AuthContext = createContext();
 const AuthProvider = (props) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const storedToken = localStorage.getItem('token');
     if (storedUser) setUser(JSON.parse(storedUser));
     if (storedToken) setToken(storedToken);
-    setLoading(false);
   }, []);
 
   const loginUser = () => {
@@ -22,18 +20,16 @@ const AuthProvider = (props) => {
     if (savedToken) setToken(savedToken);
   };
 
-  // Method to log out the user
   const logoutUser = () => {
     setUser(null);
-    localStorage.removeItem('user');
+    setToken(null);
   };
 
   const value = {
     user,
     token,
-    loading,
     loginUser,
-    logoutUser,
+    logoutUser
   };
 
   return <AuthContext.Provider value={value} {...props} />;
