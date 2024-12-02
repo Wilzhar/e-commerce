@@ -14,7 +14,7 @@ function SignUp() {
 
   useEffect(() => {
     if (user) navigate('/dashboard');
-  }, [user]);
+  }, [user, navigate]);
 
   // Handle the form submission
   const handleSubmit = async (e) => {

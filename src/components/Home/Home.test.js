@@ -9,11 +9,11 @@ import '@testing-library/jest-dom';
 describe('Home Component', () => {
   test('renders the Home page when the path is "/"', () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <AuthProvider>
           <Home />
         </AuthProvider>
-      </MemoryRouter>
+      </MemoryRouter >
     );
     expect(screen.getByText(/Welcome to the Home page/i)).toBeInTheDocument();
   });

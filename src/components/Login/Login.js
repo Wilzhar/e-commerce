@@ -14,7 +14,7 @@ function Login() {
 
   useEffect(() => {
     if (user) navigate('/dashboard');
-  }, [user]);
+  }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ function Login() {
       loginUser();
       navigate('/dashboard');    // Redirect to dashboard
     } catch (err) {
-      setError(err?.response?.data?.errors || 'Login failed. Please check your credentials.');
+      setError(err?.message || 'Login failed. Please check your credentials.');
     }
   };
 

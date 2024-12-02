@@ -44,8 +44,7 @@ describe('authService', () => {
       try {
         await login('test@example.com', 'password');
       } catch (error) {
-        expect(error.response.status).toBe(401); // Ensure 401 status
-        expect(error.response.data.errors).toEqual(["Invalid login credentials. Please try again."]);
+        expect(error.message).toEqual("Invalid login credentials. Please try again.");
       }
 
     });

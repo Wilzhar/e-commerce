@@ -2,13 +2,21 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL;
 
 export const login = async (email, password) => {
-  const response = await axios.post(`${API_URL}/auth/sign_in`, { email, password });
-  const token = response.headers["authorization"];
-  if (token) {
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(response?.data?.data));
+  try {
+    const response = await axios.post(`${API_URL}/auth/sign_in`, { email, password });
+    const token = response.headers["authorization"];
+    if (token) {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(response?.data?.data));
+    }
+    return response.data;
+  } catch (err) {
+    if (err.response?.status === 401) {
+      throw new Error(err.response?.data?.errors || 'Invalid login credentials.');
+    } else {
+      throw new Error('Login failed. Please check your credentials and try again.');
+    }
   }
-  return response.data;
 };
 
 export const signUp = async (userData) => {
@@ -17,7 +25,7 @@ export const signUp = async (userData) => {
     const response = await axios.post(`${API_URL}/auth`, userData);
 
     // Assuming the backend returns user data including a token on successful sign-up
-    if (response?.data?.status == 'success') {
+    if (response?.data?.status === 'success') {
       localStorage.setItem('token', response.headers["authorization"]);
       localStorage.setItem('user', JSON.stringify(response?.data?.data));
       return response.data;
@@ -32,7 +40,7 @@ export const logout = async () => {
   try {
     // Replace with your backend endpoint for logout
     const response = await axios.delete(`${API_URL}/auth/sign_out`);
-    if (response?.data?.status == 'success') {
+    if (response?.data?.status === 'success') {
       localStorage.removeItem('token');
       return response.data;
     }
