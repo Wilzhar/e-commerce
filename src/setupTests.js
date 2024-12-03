@@ -3,3 +3,9 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+
+process.env.REACT_APP_API_URL = "http://localhost:3000";
+// global.XMLHttpRequest = undefined;
+Storage.prototype.setItem = jest.fn();
+Storage.prototype.getItem = jest.fn();
+Storage.prototype.removeItem = jest.fn();
