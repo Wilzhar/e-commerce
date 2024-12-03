@@ -29,6 +29,8 @@ describe('Login Component', () => {
 
     // Simulate user interaction
     await simulateLogin('test@example.com', 'password123');
+    expect(localStorage.getItem).toHaveBeenCalledWith('token');
+    expect(localStorage.getItem).toHaveBeenCalledWith('user');
 
     // Assert navigation to dashboard
     await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith('/dashboard'));

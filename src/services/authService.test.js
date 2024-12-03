@@ -50,6 +50,54 @@ describe('authService', () => {
     });
   });
 
+  describe('signUp', () => {
+    test('should store token and user data', async () => {
+      const mockResponse = { status: 'success', data: { id: 1, email: 'test@example.com' } };
+      const mockHeaders = { authorization: 'Bearer mock-token' };
+
+      // Mock the POST request
+      mock
+        .onPost(`${API_URL}/auth`, { email: 'test@example.com', password: 'password', password_confirmation: 'password' })
+        .reply(200, mockResponse, mockHeaders);
+
+      const result = await signUp({ email: 'test@example.com', password: 'password', password_confirmation: 'password' });
+
+      // Check if localStorage.setItem was called correctly
+      expect(localStorage.setItem).toHaveBeenCalledWith('token', 'Bearer mock-token');
+      expect(localStorage.setItem).toHaveBeenCalledWith('user', JSON.stringify(mockResponse.data));
+
+      expect(result).toEqual(mockResponse);
+    });
+
+    test('should throw an error if the passwords do not match', async () => {
+      try {
+        await signUp({ email: 'test@example.com', password: 'password', password_confirmation: 'passwordd' });
+      } catch (error) {
+        expect(error.message).toEqual("Password doesn\'t match");
+      }
+    });
+
+    test('should throw an error if the email is invalid', async () => {
+      try {
+        await signUp({ email: 'test@example', password: 'password', password_confirmation: 'password' });
+      } catch (error) {
+        expect(error.message).toEqual("Invalid email format");
+      }
+    });
+
+    test('should throw an error if the API call fails', async () => {
+      mock
+        .onPost(`${API_URL}/auth`, { email: 'test@example.com', password: 'password', password_confirmation: 'password' })
+        .reply(500, {});
+
+      try {
+        await signUp({ email: 'test@example.com', password: 'password', password_confirmation: 'password' });
+      } catch (error) {
+        expect(error.message).toEqual("Request failed with status code 500");
+      }
+    });
+  });
+
   describe('logout', () => {
     test('should remove localStorage items', async () => {
       const mockResponse = { success: true };

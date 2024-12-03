@@ -1,36 +1,30 @@
-// src/components/SignUp.js
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // To navigate after successful sign-up
-import { useAuth } from '../../context/AuthContext'; // To access AuthContext for loginUser
-import { signUp } from '../../services/authService'; // A service function to handle API call
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { signUp } from '../../services/authService';
 
 function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirm_password, setConfirmPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState('');
-  const { loginUser, user } = useAuth(); // To update the global auth state after registration
-  const navigate = useNavigate(); // To navigate after successful sign-up
+  const { loginUser, user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) navigate('/dashboard');
   }, [user, navigate]);
 
-  // Handle the form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // Clear any previous error
+    setError('');
 
     try {
-      await signUp({ email, password, confirm_password });
-
-      loginUser(); // Update the global auth state after registration
+      await signUp({ email, password, password_confirmation: passwordConfirmation });
+      loginUser();
       navigate('/dashboard');
-
-      // Redirect the user to the dashboard or home page
     } catch (err) {
-      // Handle errors (e.g., email already taken, invalid input, etc.)
-      setError('Sign-up failed. Please try again.');
+      setError(err?.message || 'Sign-up failed. Please try again.');
     }
   };
 
@@ -45,6 +39,7 @@ function SignUp() {
             type="email"
             id="email"
             value={email}
+            placeholder='Email'
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -55,6 +50,7 @@ function SignUp() {
             type="password"
             id="password"
             value={password}
+            placeholder='Password'
             onChange={(e) => setPassword(e.target.value)}
             required
           />
@@ -64,8 +60,9 @@ function SignUp() {
           <input
             type="password"
             id="password"
-            value={confirm_password}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={passwordConfirmation}
+            placeholder='Confirm Password'
+            onChange={(e) => setPasswordConfirmation(e.target.value)}
             required
           />
         </div>

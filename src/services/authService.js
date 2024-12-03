@@ -1,5 +1,6 @@
 import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL;
+const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 
 export const login = async (email, password) => {
   try {
@@ -17,31 +18,30 @@ export const login = async (email, password) => {
 
 export const signUp = async (userData) => {
   try {
-    // Replace with your backend endpoint for registration
+    if (!validEmailFormat(userData.email)) throw new Error('Invalid email format')
+    if (!validPassword(userData.password, userData.password_confirmation)) throw new Error('Password doesn\'t match')
     const response = await axios.post(`${API_URL}/auth`, userData);
 
-    // Assuming the backend returns user data including a token on successful sign-up
     if (response?.data?.status === 'success') {
       localStorage.setItem('token', response.headers["authorization"]);
       localStorage.setItem('user', JSON.stringify(response?.data?.data));
       return response.data;
     }
-    throw new Error(response?.data?.message);
+    throw new Error(response?.data?.message || 'Sign-up failed');
   } catch (err) {
-    throw new Error(err?.response?.data?.message || 'Sign-up failed');
+    throw new Error(err?.response?.data?.errors?.full_messages || err?.message || 'Sign-up failed');
   }
 };
 
 export const logout = async () => {
   try {
-    // Replace with your backend endpoint for logout
     const token = localStorage.getItem('token');
     if (!token) {
       removeLocalStorage();
       return;
     }
 
-    const response = await axios.delete('http://localhost:3000/auth/sign_out', {
+    const response = await axios.delete(`${API_URL}/auth/sign_out`, {
       headers: {
         'Authorization': token
       }
@@ -63,4 +63,14 @@ export const logout = async () => {
 const removeLocalStorage = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
+}
+
+const validEmailFormat = (email) => {
+  let regex = new RegExp(EMAIL_REGEX, 'g')
+  let result = regex.test(email)
+  return result
+}
+
+const validPassword = (password, passwordConfirmation) => {
+  return password === passwordConfirmation
 }
