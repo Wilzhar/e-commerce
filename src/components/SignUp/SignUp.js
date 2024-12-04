@@ -67,7 +67,7 @@ function SignUp() {
             required
           />
         </div>
-        <button className="mt-5 bg-red-500 text-white w-full h-12" type="submit">Create Account</button>
+        <button className="base-button w-full" type="submit">Create Account</button>
       </form>
 
       <p className='mt-8 text-center'>Already have an account? <Link to="/login" className='ml-4 border-b-2 border-gray-200'>Login</Link></p>

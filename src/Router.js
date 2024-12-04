@@ -11,6 +11,7 @@ import About from './pages/About/About';
 import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp/SignUp";
 import Footer from './components/Footer/Footer';
+import NotFound from './pages/NotFound/NotFound';
 
 const futureConfig = {
   future: {
@@ -28,13 +29,13 @@ const router = createBrowserRouter([
     element: (
       <>
         <Header />
-        <div className='2xl:w-[1536px] 2xl:mx-auto 2xl:my-0 min-h-[400px]'>
+        <div className='2xl:w-[1536px] 2xl:mx-auto 2xl:my-0 min-h-[400px] mt-8 2xl:mt-16'>
           <Outlet />
         </div>
         <Footer />
       </>
     ),
-    errorElement: <div>Error</div>,
+    errorElement: <NotFound />,
     children: [
       {
         path: '/',

@@ -12,7 +12,7 @@ const Footer = () => {
           <h3 className='font-bold text-xl'>Exclusive</h3>
           <h3 className='font-bold'>Subscribe</h3>
           <p> Get 10% off on your first order</p>
-          <InputIcon className='w-[65%]' />
+          <InputIcon className='w-[12em] max-w-[12em]' />
         </div>
         <div className="flex flex-col gap-3 flex-1 h-full w-full">
           <h3 className='font-medium text-l'>Support</h3>

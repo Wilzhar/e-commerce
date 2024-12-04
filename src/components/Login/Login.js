@@ -19,9 +19,9 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(email, password);  // API call to backend
+      await login(email, password);
       loginUser();
-      navigate('/dashboard');    // Redirect to dashboard
+      navigate('/dashboard');
     } catch (err) {
       setError(err?.message || 'Login failed. Please check your credentials.');
     }

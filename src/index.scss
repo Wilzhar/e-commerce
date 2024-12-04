@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './custom.scss';
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Poppins',
