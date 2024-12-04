@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../services/authService";
 import { useAuth } from '../../context/AuthContext';
 
-import './Login.css';
+import './Login.scss';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -54,7 +54,7 @@ function Login() {
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button className="login-button" type="submit">Login</button>
       </form>
     </div>
   );

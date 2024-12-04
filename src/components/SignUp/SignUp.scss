@@ -1,0 +1,17 @@
+.sign-up-container {
+    max-width: 400px;
+    height: auto;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+
+    input {
+        padding-left: 0%;
+        padding-right: 0%;
+        border-bottom: 2px solid #ccc;
+
+        &:focus {
+            outline: none;
+        }
+    }
+}

@@ -1,6 +1,6 @@
 import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL;
-const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+const EMAIL_REGEX = /^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 export const login = async (email, password) => {
   try {

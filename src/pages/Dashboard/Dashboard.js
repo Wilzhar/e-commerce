@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { logout } from "../../services/authService";
 
-import './Dashboard.css';
+import './Dashboard.scss';
 
 const Dashboard = () => {
   const [error, setError] = useState('');

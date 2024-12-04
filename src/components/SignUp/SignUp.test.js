@@ -5,7 +5,7 @@ import '@testing-library/jest-dom';
 import { setupComponent, mockedNavigate } from '../../../tests/test-utils.js';
 import * as authService from '../../services/authService';
 import SignUp from './SignUp.js';
-import Dashboard from '../Dashboard/Dashboard.js';
+import Dashboard from '../../pages/Dashboard/Dashboard.js';
 
 describe('Signup Component', () => {
   beforeEach(() => {
@@ -16,7 +16,7 @@ describe('Signup Component', () => {
     await userEvent.type(screen.getByPlaceholderText(/Email/i), email);
     await userEvent.type(screen.getByPlaceholderText('Password'), password);
     await userEvent.type(screen.getByPlaceholderText(/Confirm Password/i), passwordConfirmation);
-    await userEvent.click(screen.getByRole('button', { name: 'Sign Up' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Create Account' }));
   };
 
   test('successful signup', async () => {    // Mock login API response

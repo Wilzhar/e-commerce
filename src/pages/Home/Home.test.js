@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, waitFor, act } from '@testing-library/react';
-import Home from './Home';
+import Home from './Home.js';
 import '@testing-library/jest-dom';
 import { setupComponent, mockedNavigate } from '../../../tests/test-utils.js';
 

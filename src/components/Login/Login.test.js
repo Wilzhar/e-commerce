@@ -5,7 +5,7 @@ import * as authService from '../../services/authService';
 import { setupComponent, mockedNavigate } from '../../../tests/test-utils.js';
 
 import Login from './Login';
-import Dashboard from '../Dashboard/Dashboard';
+import Dashboard from '../../pages/Dashboard/Dashboard.js';
 
 describe('Login Component', () => {
   beforeEach(() => {

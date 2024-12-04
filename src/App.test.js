@@ -4,22 +4,27 @@ import { screen } from '@testing-library/react';
 import { renderWithRouter } from '../tests/test-utils.js';
 import { AuthProvider } from './context/AuthContext';
 import '@testing-library/jest-dom';
-import Home from './components/Home/Home';
+
+// Components
+import Home from './pages/Home/Home';
+import Header from './components/Header/Header.js';
+import Footer from './components/Footer/Footer.js';
 
 describe('App Component', () => {
   test('renders the Home page when the path is "/"', () => {
     renderWithRouter(
       <>
-        <div>Header</div>
+        <Header />
         <AuthProvider>
           <Home />
         </AuthProvider>
-        <div>Footer</div>
+        <Footer />
       </>
     );
 
-    expect(screen.getByText('Header')).toBeInTheDocument();
-    expect(screen.getByText('Footer')).toBeInTheDocument();
+    expect(screen.getByTestId('header-component')).toBeInTheDocument();
+    expect(screen.getByText('Welcome to the Home page')).toBeInTheDocument();
+    expect(screen.getByTestId('footer-component')).toBeInTheDocument();
     // Ensure Home component content renders
     expect(screen.getByText(/Welcome to the Home page/i)).toBeInTheDocument();
   });

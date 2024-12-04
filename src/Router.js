@@ -1,9 +1,16 @@
-import Home from './components/Home/Home';
-import Login from './components/Login/Login';
-import SignUp from './components/SignUp/SignUp';
-import Dashboard from './components/Dashboard/Dashboard';
-import PrivateRoute from './components/PrivateRoutes';
 import { Outlet, createBrowserRouter } from "react-router-dom";
+
+// components
+import Header from './components/Header/Header';
+import Home from './pages/Home/Home';
+import Auth from './pages/Auth/Auth';
+import Dashboard from './pages/Dashboard/Dashboard';
+import PrivateRoute from './components/PrivateRoutes';
+import Contact from './pages/Contact/Contact';
+import About from './pages/About/About';
+import Login from "./components/Login/Login";
+import SignUp from "./components/SignUp/SignUp";
+import Footer from './components/Footer/Footer';
 
 const futureConfig = {
   future: {
@@ -20,9 +27,11 @@ const router = createBrowserRouter([
     path: '/',
     element: (
       <>
-        <div>Header</div>
-        <Outlet />
-        <div>Footer</div>
+        <Header />
+        <div className='2xl:w-[1536px] 2xl:mx-auto 2xl:my-0 min-h-[400px]'>
+          <Outlet />
+        </div>
+        <Footer />
       </>
     ),
     errorElement: <div>Error</div>,
@@ -33,15 +42,23 @@ const router = createBrowserRouter([
       },
       {
         path: '/login',
-        element: <Login />,
+        element: <Auth><Login /></Auth>,
       },
       {
         path: '/signup',
-        element: <SignUp />,
+        element: <Auth><SignUp /></Auth>,
       },
       {
         path: '/dashboard',
         element: <PrivateRoute element={<Dashboard />} />,
+      },
+      {
+        path: '/contact',
+        element: <Contact />,
+      },
+      {
+        path: '/about',
+        element: <About />,
       },
     ]
   },

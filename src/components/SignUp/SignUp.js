@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { signUp } from '../../services/authService';
+import { Link } from 'react-router-dom';
+
+import './SignUp.scss';
 
 function SignUp() {
   const [email, setEmail] = useState('');
@@ -29,12 +32,12 @@ function SignUp() {
   };
 
   return (
-    <div className="sign-up-container">
-      <h2>Sign Up</h2>
+    <div className="sign-up-container align-left justify-normal">
+      <h2 className='text-4xl mb-4'>Create an account</h2>
+      <p>Enter your details below</p>
       {error && <p className="error">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
@@ -45,7 +48,6 @@ function SignUp() {
           />
         </div>
         <div>
-          <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
@@ -56,7 +58,6 @@ function SignUp() {
           />
         </div>
         <div>
-          <label htmlFor="password">Confirm Password</label>
           <input
             type="password"
             id="password"
@@ -66,8 +67,10 @@ function SignUp() {
             required
           />
         </div>
-        <button type="submit">Sign Up</button>
+        <button className="mt-5 bg-red-500 text-white w-full h-12" type="submit">Create Account</button>
       </form>
+
+      <p className='mt-8 text-center'>Already have an account? <Link to="/login" className='ml-4 border-b-2 border-gray-200'>Login</Link></p>
     </div>
   );
 }
