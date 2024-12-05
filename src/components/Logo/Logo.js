@@ -5,7 +5,7 @@ const Logo = (props) => {
 
   return (
     <div className={clsx('', props.className)}>
-      <h1 className='font-bold text-2xl'>Exclusive</h1>
+      <h1 className='text-2xl font-bold'>Exclusive</h1>
     </div>
   );
 };

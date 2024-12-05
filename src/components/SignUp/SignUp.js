@@ -2,26 +2,26 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { signUp } from '../../services/authService';
+import CustomForm from '../Form/CustomForm';
 import { Link } from 'react-router-dom';
 
-import './SignUp.scss';
-
 function SignUp() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState('');
   const { loginUser, user } = useAuth();
   const navigate = useNavigate();
+  const fields = [
+    { name: 'email', type: 'email', placeholder: 'Email', required: true },
+    { name: 'password', type: 'password', placeholder: 'Password', required: true },
+    { name: 'passwordConfirmation', type: 'password', placeholder: 'Confirm Password', required: true },
+  ];
 
   useEffect(() => {
     if (user) navigate('/dashboard');
   }, [user, navigate]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (formData) => {
     setError('');
-
+    const { email, password, passwordConfirmation } = formData;
     try {
       await signUp({ email, password, password_confirmation: passwordConfirmation });
       loginUser();
@@ -32,45 +32,17 @@ function SignUp() {
   };
 
   return (
-    <div className="sign-up-container align-left justify-normal">
-      <h2 className='text-4xl mb-4'>Create an account</h2>
-      <p>Enter your details below</p>
-      {error && <p className="error">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            placeholder='Email'
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            placeholder='Password'
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            id="password"
-            value={passwordConfirmation}
-            placeholder='Confirm Password'
-            onChange={(e) => setPasswordConfirmation(e.target.value)}
-            required
-          />
-        </div>
-        <button className="base-button w-full" type="submit">Create Account</button>
-      </form>
-
-      <p className='mt-8 text-center'>Already have an account? <Link to="/login" className='ml-4 border-b-2 border-gray-200'>Login</Link></p>
+    <div>
+      <CustomForm
+        title="Create an account"
+        subtitle="Enter your details below"
+        fields={fields}
+        onSubmit={handleSubmit}
+        errorMessage={error}
+        buttonText="Create Account"
+      >
+        <p className='mt-8 text-center'>Already have an account? <Link to="/login" className='ml-4 border-b-2 hover:border-gray-300'>Login</Link></p>
+      </CustomForm>
     </div>
   );
 }

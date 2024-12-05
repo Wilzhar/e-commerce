@@ -15,7 +15,7 @@ describe('Login Component', () => {
   const simulateLogin = async (email, password) => {
     await userEvent.type(screen.getByPlaceholderText(/Email/i), email);
     await userEvent.type(screen.getByPlaceholderText(/Password/i), password);
-    await userEvent.click(screen.getByRole('button', { name: 'Login' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Log in' }));
   };
 
   test('successful login', async () => {

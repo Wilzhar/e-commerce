@@ -1,4 +1,4 @@
-.sign-up-container {
+.form-container {
     max-width: 400px;
     height: auto;
     margin: auto;
@@ -9,6 +9,8 @@
         padding-left: 0%;
         padding-right: 0%;
         border-bottom: 2px solid #ccc;
+        margin-top: 30px;
+        padding-bottom: 10px;
 
         &:focus {
             outline: none;

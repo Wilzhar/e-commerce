@@ -2,22 +2,26 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../services/authService";
 import { useAuth } from '../../context/AuthContext';
+import { Link } from 'react-router-dom';
 
-import './Login.scss';
+// Components
+import CustomForm from '../Form/CustomForm';
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { loginUser, user } = useAuth();
+  const fields = [
+    { name: 'email', type: 'email', placeholder: 'Email', required: true },
+    { name: 'password', type: 'password', placeholder: 'Password', required: true },
+  ];
 
   useEffect(() => {
     if (user) navigate('/dashboard');
   }, [user, navigate]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (formData) => {
+    const { email, password } = formData;
     try {
       await login(email, password);
       loginUser();
@@ -28,35 +32,21 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      {error && <p className="error">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-          />
+    <div>
+      <CustomForm
+        title="Log in to Exclusive"
+        subtitle="Enter your details below"
+        fields={fields}
+        onSubmit={handleSubmit}
+        errorMessage={error}
+        buttonText="Log in"
+      >
+        <div className="flex flex-col items-center w-full p-0">
+          <Link to="/forgot-password" className='mt-2 text-sm text-red-500 hover:text-red-700'>Forgot password?</Link>
+          <p className="mt-6">Don't have an account? <Link to="/signup" className='ml-4 border-b-2 border-gray-200 hover:border-gray-300'>Sign up</Link></p>
         </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-          />
-        </div>
-        <button className="login-button" type="submit">Login</button>
-      </form>
-    </div>
+      </CustomForm>
+    </div >
   );
 }
 

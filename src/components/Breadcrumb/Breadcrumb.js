@@ -5,7 +5,7 @@ const Breadcrumb = ({ children }) => {
   const childrenArray = Children.toArray(children);
 
   return (
-    <div className='flex gap-3 w-full'>
+    <div className='flex w-full gap-3'>
       {childrenArray.map((child, index) => {
         const isLastChild = index === childrenArray.length - 1;
         return (
