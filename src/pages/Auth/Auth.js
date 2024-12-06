@@ -3,7 +3,7 @@ import React from 'react';
 const Auth = (props) => {
 
   return (
-    <div className='flex justify-center items-center w-full h-[50em] overflow-hidden my-16'>
+    <div className='flex flex-col md:flex-row justify-center items-center w-full h-[50em] overflow-hidden my-16'>
       <div className='flex-[0_0_60%] w-full mx-auto h-full'>
         <img className='object-cover w-auto h-full' src='/images/auth-image.jpg' alt='logo' />
       </div>

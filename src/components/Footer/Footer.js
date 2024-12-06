@@ -7,8 +7,8 @@ import InputIcon from '../InputIcon/InputIcon';
 
 const Footer = () => {
   return (
-    <footer data-testid="footer-component" className="h-[28rem] bg-black text-white p-24 gap-x-5">
-      <div className='flex 2xl:w-[1536px] 2xl:mx-auto 2xl:my-0'>
+    <footer data-testid="footer-component" className="h-auto lg:h-[28rem] bg-black text-white p-24">
+      <div className='flex flex-col xl:flex-row 2xl:w-[1536px] 2xl:mx-auto 2xl:my-0 gap-16 xl:gap-0'>
         <div className="flex flex-col flex-1 w-full h-full gap-3">
           <h3 className='text-xl font-bold'>Exclusive</h3>
           <h3 className='font-bold'>Subscribe</h3>
@@ -18,28 +18,28 @@ const Footer = () => {
           </InputIcon>
         </div>
         <div className="flex flex-col flex-1 w-full h-full gap-3">
-          <h3 className='font-medium text-l'>Support</h3>
+          <h3 className='font-semibold xl:font-medium text-l'>Support</h3>
           <p>111 Bijoy sarani, Dhaka,  DH 1515, Bangladesh.</p>
           <p>exclusive@gmail.com</p>
           <p>+88015-88888-9999</p>
         </div>
         <div className="flex flex-col flex-1 w-full h-full gap-3">
-          <h3 className='font-medium text-l'>Account</h3>
-          <Link to='/dashboard'>My Account</Link>
-          <Link to='/login'>Login / Register</Link>
-          <Link to='/cart'>Cart</Link>
-          <Link to='/wishlist'>Wishlist</Link>
-          <Link to='/shop'>Shop</Link>
+          <h3 className='font-semibold xl:font-medium text-l'>Account</h3>
+          <Link to='/dashboard' className='hover:font-semibold'>My Account</Link>
+          <Link to='/login' className='hover:font-semibold'>Login / Register</Link>
+          <Link to='/cart' className='hover:font-semibold'>Cart</Link>
+          <Link to='/wishlist' className='hover:font-semibold'>Wishlist</Link>
+          <Link to='/shop' className='hover:font-semibold'>Shop</Link>
         </div>
         <div className="flex flex-col flex-1 w-full h-full gap-3">
-          <h3 className='font-medium text-l'>Quick Links</h3>
-          <Link to='/privacy-policy'>Privacy Policy</Link>
-          <Link to='/terms-and-conditions'>Terms & Conditions</Link>
-          <Link to='/faq'>FAQ</Link>
-          <Link to='/contact'>Contact</Link>
+          <h3 className='font-semibold xl:font-medium text-l'>Quick Links</h3>
+          <Link to='/privacy-policy' className='hover:font-semibold'>Privacy Policy</Link>
+          <Link to='/terms-and-conditions' className='hover:font-semibold'>Terms & Conditions</Link>
+          <Link to='/faq' className='hover:font-semibold'>FAQ</Link>
+          <Link to='/contact' className='hover:font-semibold'>Contact</Link>
         </div>
         <div className="flex flex-col flex-1 w-full h-full gap-3">
-          <h3 className='font-medium text-l'>Download App</h3>
+          <h3 className='font-semibold xl:font-medium text-l'>Download App</h3>
           <p>Save $3 with App New User Only</p>
           <div className='flex mx-auto my-0'>
             <img src='/images/download-app-qr.svg' alt='download app' className='m-2 bg-white w-28 h-28' />
