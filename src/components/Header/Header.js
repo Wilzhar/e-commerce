@@ -17,10 +17,6 @@ const Header = () => {
   const getLinkClass = (path) =>
     clsx('border-b-2 hover:border-gray-200', pathname === path ? selectedPathStyle : 'border-white');
 
-  const closeMenu = () => {
-    if (isOpen) setIsOpen(false);
-  };
-
   return (
     <header data-testid="header-component" className="flex items-center justify-center w-full h-24 px-6 border-b-2 border-gray-200 sm:px-16 3xl:px-0">
       <div className='2xl:w-[1536px] 2xl:mx-auto 2xl:my-0 flex justify-center items-center w-full'>
@@ -29,7 +25,7 @@ const Header = () => {
             <Logo />
           </Link>
         </div>
-        <div className={clsx('', isOpen ? "absolute top-0 left-0 w-screen h-screen" : "relative w-auto h-auto")} onClick={closeMenu}>
+        <div className={clsx('', isOpen ? "absolute top-0 left-0 w-screen h-screen" : "relative w-auto h-auto")} onClick={() => { if (isOpen) setIsOpen(false) }} >
           <nav className={clsx("fixed py-3 text-xl bg-white border-2 border-gray-200 rounded lg:py-auto top-2 right-2 lg:relative lg:text-base lg:flex-1 lg:block w-52 lg:w-auto lg:border-none", isOpen ? "block" : "hidden")}>
             <ul className="flex flex-col items-center justify-center lg:flex-row gap-x-8 gap-y-2">
               <li className={getLinkClass('/')}>
