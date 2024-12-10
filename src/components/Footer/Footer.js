@@ -7,8 +7,8 @@ import InputIcon from '../InputIcon/InputIcon';
 
 const Footer = () => {
   return (
-    <footer data-testid="footer-component" className="h-auto lg:h-[28rem] bg-black text-white p-12 sm:pl-16 xl:p-20 lg:p-24">
-      <div className='flex flex-col xl:flex-row 2xl:w-[1536px] 2xl:mx-auto 2xl:my-0 gap-16 xl:gap-0'>
+    <footer data-testid="footer-component" className="h-auto xl:h-[28rem] bg-black text-white p-12 sm:pl-16 xl:p-20 lg:p-24">
+      <div className='flex flex-col sm:grid-cols-2 sm:grid lg:grid-cols-3 xl:flex xl:flex-row 2xl:w-[1536px] 2xl:mx-auto 2xl:my-0 gap-16 xl:gap-0'>
         <div className="flex flex-col flex-1 w-full h-full gap-3">
           <h3 className='text-xl font-bold'>Exclusive</h3>
           <h3 className='font-bold'>Subscribe</h3>
